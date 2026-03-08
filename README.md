@@ -1,6 +1,6 @@
 # 🔒 Sistema Inteligente de Controle de Acesso (ESP32 + Python + Discord)
 
-![Exemplo de Funcionamento do Discord](https://i.ibb.co/678csXPK/wmremove-transformed.png)
+![Exemplo de Funcionamento do Discord](exemplo.png)
 *(Exemplo das notificações recebidas no Discord com o status de Acesso Liberado e Acesso Negado)*
 
 ## 📖 Sobre o Projeto
