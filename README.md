@@ -1,104 +1,42 @@
----
+# SafeAcess
 
-# SafeAccess: IoT Smart Access Control (ESP32 + Python + Discord)
+**Intelligent IoT Access Control with Facial Recognition.**  
 
-An intelligent IoT security project that provides real-time facial recognition and access control. By integrating an **ESP32-CAM** with a **Python-based backend**, the system validates authorized users, triggers physical locks via relays, and sends instant notifications—including snapshots—directly to a **Discord** server.
+Academic Project developed in the **4th period: First semester of 2025 (2025/1)**.  
+This system integrates ESP32-CAM hardware with a Python backend to provide real-time biometric validation and automated security alerts.
 
-> **Automated access with security and connectivity.**
+## Technical Overview
 
----
+| Component | Responsibility |
+|---|---|
+| **ESP32-CAM** | Image capture and motion sensing (PIR) |
+| **Python API** | Biometric processing and face recognition |
+| **Discord Bot** | Real-time notifications and image logs |
+| **OLED/Relay** | Local feedback and physical lock control |
 
 ## Key Features
 
-* **Biometric Recognition:** High-accuracy facial recognition using `face_recognition` and `dlib`.
-* **Discord Integration:** Real-time alerts via Webhooks, sending access status and captured images.
-* **Physical Control:** Automated relay activation for electronic door locks.
-* **Motion-Triggered:** PIR sensor integration to activate the camera only when movement is detected.
-* **Local Feedback:** Visual status updates ("Access Granted" / "Access Denied") on an I2C OLED display.
+- **Biometric Validation:** High-accuracy facial recognition using dlib and OpenCV.
+- **Real-time Alerts:** Immediate Discord notifications with snapshots on every access attempt.
+- **Physical Automation:** Automated relay triggering for electronic door locks.
+- **Hardware Feedback:** Visual status updates via I2C SSD1306 OLED display.
 
----
-
-## Hardware & Software Requirements
-
-### Hardware
-* **ESP32 Board:** ESP32-CAM (AI-Thinker) or TTGO T-Camera.
-* **Sensors:** PIR Motion Sensor (HC-SR501).
-* **Actuators:** 5V Relay Module (for the electronic lock).
-* **Display:** SSD1306 OLED Display (I2C).
-
-### Software
-* **Python 3.8+**
-* **Arduino IDE** (with ESP32 board support).
-* **Python Libraries:** `Flask`, `face_recognition`, `opencv-python`, `requests`, `Pillow`.
-
----
-
-## Folder Structure
+## System Architecture
 
 ```text
 .
-├── AccessControl/          # ESP32 Firmware (Arduino IDE)
-│   └── AccessControl.ino
-├── known_faces/            # Database for authorized users (Name.jpg)
-├── templates/              # Optional Flask HTML templates
-├── cloud_bridge_server.py  # Python Backend & Integration Server
-├── exemplo.png             # Preview of Discord notifications
-└── README.md
+├── AccessControl/      # ESP32-CAM Firmware (Arduino)
+├── cloud_bridge.py     # Python Backend & Discord Integration
+├── templates/          # Web interface assets
+└── known_faces/        # Authorized biometric database
 ```
 
----
+## Quick Start
 
-## Setup & Installation
-
-### 1. Database Setup
-1. Create a folder named `known_faces` in the root directory.
-2. Add clear photos of authorized individuals.
-3. The filename will be used as the person's name (e.g., `Hugo_Takeda.jpg`, `John_Doe.png`).
-
-### 2. Discord Webhook
-1. In your Discord server, go to **Server Settings** > **Integrations** > **Webhooks**.
-2. Create a new Webhook and copy the **Webhook URL**.
-3. Open `cloud_bridge_server.py` and update the `DISCORD_WEBHOOK_URL` variable.
-
-### 3. Start the Python Server
-Run the following commands in your terminal:
-```bash
-pip install Flask requests Pillow face_recognition opencv-python
-python cloud_bridge_server.py
-```
-*Note: Note down your local IP address (e.g., `192.168.x.x`) to configure the ESP32.*
-
-### 4. ESP32 Configuration
-Open `AccessControl/AccessControl.ino` in Arduino IDE:
-1. Update `ssid` and `password` with your Wi-Fi credentials.
-2. Update the `serverUrl` with your Python server's IP:
-   ```cpp
-   String serverUrl = "http://192.168.x.x:5000/recognize";
-   ```
-3. Compile and upload the code to your ESP32.
+1. **Backend:** Populate `known_faces/`, update your Discord Webhook in `cloud_bridge.py`, and run the server.
+2. **Firmware:** Configure Wi-Fi and API endpoint in `AccessControl.ino` and upload to ESP32.
+3. **Hardware:** Connect PIR sensor (capture trigger) and Relay (door lock) to the ESP32 pins.
 
 ---
 
-## How it Works
-
-1. **Detection:** The PIR sensor detects movement.
-2. **Capture:** The ESP32-CAM takes a photo and sends it to the Flask API via a POST request.
-3. **Analysis:** The Python server processes the image, comparing it against the `known_faces` database.
-4. **Action:**
-   * **If Recognized:** The server sends a "success" response. The ESP32 triggers the relay to open the door and displays "Access Granted" on the OLED.
-   * **If Unrecognized:** "Access Denied" is displayed.
-5. **Notification:** A message with the result and the photo is instantly sent to the Discord channel.
-
----
-
-## Contributing
-
-Contributions and suggestions are welcome! Feel free to open an issue or submit a pull request.
-
----
-
-## License
-
-This project is licensed under the **MIT License**.
-
----
+[MIT](./LICENSE) © 2025 hugotakeda
